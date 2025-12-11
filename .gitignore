@@ -1,0 +1,27 @@
+# Claude Code settings (local configuration files)
+.claude/*.local.md
+
+# Node modules (if MCP server uses Node.js)
+node_modules/
+mcp/ghost/node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Build outputs
+dist/
+build/
+*.log
+
+# Temporary files
+*.tmp
+*.temp

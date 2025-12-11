@@ -1,0 +1,16 @@
+{
+  "name": "pg-writer",
+  "version": "0.1.0",
+  "description": "ポール・グレアム風のエッセイ執筆を支援するプラグイン。Ghost APIとの統合、PG執筆哲学に基づいた編集機能を提供します。",
+  "author": {
+    "name": "mtane0412",
+    "email": ""
+  },
+  "license": "MIT",
+  "keywords": ["writing", "essay", "paul-graham", "ghost", "blog"],
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
