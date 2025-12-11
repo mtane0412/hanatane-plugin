@@ -37,7 +37,7 @@ pg-writerは、ポール・グレアムの執筆哲学に基づいたエッセ�
 
 1. このリポジトリをクローンまたはダウンロード:
 ```bash
-git clone <repository-url> pg-writer
+git clone https://github.com/mtane0412/hanatane-plugin.git pg-writer
 cd pg-writer
 ```
 
@@ -55,41 +55,43 @@ cd ../..
    - 名前を入力(例: "pg-writer")して保存
    - **Admin API Key**をコピー
 
-4. Claude Code設定ファイル `.claude/pg-writer.local.md` を作成:
-```markdown
-# pg-writer Settings
-
-## Ghost API Configuration
-- GHOST_URL: https://your-blog.ghost.io
-- GHOST_ADMIN_API_KEY: your_admin_api_key_here
-
-## Writing Preferences (Optional)
-- default_tags: ["essay", "blog"]
-- default_author: "Your Name"
-- auto_save_drafts: true
+4. 環境変数ファイル `.env` を作成:
+```bash
+# プロジェクトルートに作成
+cat > .env << 'EOF'
+GHOST_URL=https://your-blog.ghost.io
+GHOST_ADMIN_API_KEY=your_admin_api_key_here
+EOF
 ```
 
-5. MCP設定を追加(プロジェクトの`.claude/settings.md`に追加):
-```markdown
-## MCP Servers
+**注意**: `.env`ファイルは`.gitignore`に含まれており、Gitにコミットされません。
 
+5. MCP設定ファイルを作成:
+```bash
+# .claude/.mcp.json.example をコピー
+cp .claude/.mcp.json.example .claude/.mcp.json
+```
+
+`.claude/.mcp.json`の内容:
 ```json
 {
   "mcpServers": {
     "ghost": {
       "command": "node",
-      "args": ["/absolute/path/to/pg-writer/mcp/ghost/dist/index.js"],
+      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp/ghost/dist/index.js"],
       "env": {
-        "GHOST_URL": "https://your-blog.ghost.io",
-        "GHOST_ADMIN_API_KEY": "your_admin_api_key_here"
+        "GHOST_URL": "${GHOST_URL}",
+        "GHOST_ADMIN_API_KEY": "${GHOST_ADMIN_API_KEY}"
       }
     }
   }
 }
-\```
 ```
 
-**注意**: `/absolute/path/to/pg-writer`は実際のプラグインディレクトリのパスに置き換えてください。
+**注意**:
+- `${CLAUDE_PLUGIN_ROOT}`は自動的にプラグインディレクトリに解決されます
+- `${GHOST_URL}`と`${GHOST_ADMIN_API_KEY}`は`.env`ファイルから読み込まれます
+- `.claude/.mcp.json`は`.gitignore`に含まれており、Gitにコミットされません
 
 6. プラグインを有効化:
 ```bash
