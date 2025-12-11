@@ -41,14 +41,21 @@ git clone <repository-url> pg-writer
 cd pg-writer
 ```
 
-2. MCPサーバーの依存関係をインストール:
+2. MCPサーバーの依存関係をインストールとビルド:
 ```bash
 cd mcp/ghost
 npm install
+npm run build
 cd ../..
 ```
 
-3. Claude Code設定ファイル `.claude/pg-writer.local.md` を作成:
+3. Ghost Admin APIキーを取得:
+   - Ghostダッシュボードにログイン
+   - `Settings` → `Integrations` → `Add custom integration`
+   - 名前を入力(例: "pg-writer")して保存
+   - **Admin API Key**をコピー
+
+4. Claude Code設定ファイル `.claude/pg-writer.local.md` を作成:
 ```markdown
 # pg-writer Settings
 
@@ -62,7 +69,29 @@ cd ../..
 - auto_save_drafts: true
 ```
 
-4. プラグインを有効化:
+5. MCP設定を追加(プロジェクトの`.claude/settings.md`に追加):
+```markdown
+## MCP Servers
+
+```json
+{
+  "mcpServers": {
+    "ghost": {
+      "command": "node",
+      "args": ["/absolute/path/to/pg-writer/mcp/ghost/dist/index.js"],
+      "env": {
+        "GHOST_URL": "https://your-blog.ghost.io",
+        "GHOST_ADMIN_API_KEY": "your_admin_api_key_here"
+      }
+    }
+  }
+}
+\```
+```
+
+**注意**: `/absolute/path/to/pg-writer`は実際のプラグインディレクトリのパスに置き換えてください。
+
+6. プラグインを有効化:
 ```bash
 cc --plugin-dir /path/to/pg-writer
 ```
