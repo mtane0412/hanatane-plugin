@@ -1,9 +1,14 @@
 # Claude Code settings (local configuration files)
 .claude/*.local.md
+.claude/settings.md
 
 # Node modules (if MCP server uses Node.js)
 node_modules/
 mcp/ghost/node_modules/
+
+# Package lock files
+package-lock.json
+mcp/ghost/package-lock.json
 
 # Environment variables
 .env

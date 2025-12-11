@@ -13,6 +13,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
+// @ts-ignore - No type definitions available for @tryghost/admin-api
 import GhostAdminAPI from "@tryghost/admin-api";
 import { config } from "dotenv";
 
@@ -198,9 +199,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
     switch (name) {
       case "ghost_get_posts": {
+        const params = args as { limit?: number; filter?: string } | undefined;
         const posts = await api.posts.browse({
-          limit: args.limit || 15,
-          filter: args.filter || undefined,
+          limit: params?.limit || 15,
+          filter: params?.filter || undefined,
           include: "tags,authors",
         });
 
@@ -215,9 +217,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "ghost_get_post": {
-        const post = args.slug
-          ? await api.posts.read({ slug: args.slug }, { include: "tags,authors" })
-          : await api.posts.read({ id: args.id }, { include: "tags,authors" });
+        const getParams = args as { slug?: string; id?: string } | undefined;
+        const post = getParams?.slug
+          ? await api.posts.read({ slug: getParams.slug }, { include: "tags,authors" })
+          : await api.posts.read({ id: getParams?.id }, { include: "tags,authors" });
 
         return {
           content: [
@@ -230,14 +233,22 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "ghost_create_post": {
+        const createParams = args as {
+          title: string;
+          html: string;
+          slug?: string;
+          status?: string;
+          tags?: string[];
+          published_at?: string;
+        } | undefined;
         const newPost = await api.posts.add(
           {
-            title: args.title,
-            html: args.html,
-            slug: args.slug,
-            status: args.status || "draft",
-            tags: args.tags ? args.tags.map((name: string) => ({ name })) : undefined,
-            published_at: args.published_at,
+            title: createParams?.title || "",
+            html: createParams?.html || "",
+            slug: createParams?.slug,
+            status: createParams?.status || "draft",
+            tags: createParams?.tags ? createParams.tags.map((name: string) => ({ name })) : undefined,
+            published_at: createParams?.published_at,
           },
           { include: "tags,authors" }
         );
@@ -253,16 +264,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "ghost_update_post": {
+        const updateParams = args as {
+          id: string;
+          updated_at: string;
+          title?: string;
+          html?: string;
+          slug?: string;
+          status?: string;
+          tags?: string[];
+          published_at?: string;
+        } | undefined;
         const updatedPost = await api.posts.edit(
           {
-            id: args.id,
-            updated_at: args.updated_at,
-            title: args.title,
-            html: args.html,
-            slug: args.slug,
-            status: args.status,
-            tags: args.tags ? args.tags.map((name: string) => ({ name })) : undefined,
-            published_at: args.published_at,
+            id: updateParams?.id || "",
+            updated_at: updateParams?.updated_at || "",
+            title: updateParams?.title,
+            html: updateParams?.html,
+            slug: updateParams?.slug,
+            status: updateParams?.status,
+            tags: updateParams?.tags ? updateParams.tags.map((name: string) => ({ name })) : undefined,
+            published_at: updateParams?.published_at,
           },
           { include: "tags,authors" }
         );
@@ -278,13 +299,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "ghost_delete_post": {
-        await api.posts.delete({ id: args.id });
+        const deleteParams = args as { id: string } | undefined;
+        await api.posts.delete({ id: deleteParams?.id || "" });
 
         return {
           content: [
             {
               type: "text",
-              text: JSON.stringify({ success: true, id: args.id }, null, 2),
+              text: JSON.stringify({ success: true, id: deleteParams?.id }, null, 2),
             },
           ],
         };
