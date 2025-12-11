@@ -1,6 +1,7 @@
 # Claude Code settings (local configuration files)
 .claude/*.local.md
 .claude/settings.md
+.claude/.mcp.json
 
 # Node modules (if MCP server uses Node.js)
 node_modules/

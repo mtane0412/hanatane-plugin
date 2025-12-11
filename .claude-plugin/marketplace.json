@@ -1,0 +1,13 @@
+{
+  "name": "local-dev-marketplace",
+  "owner": {
+    "name": "mtane0412"
+  },
+  "plugins": [
+    {
+      "name": "pg-writer",
+      "source": "./",
+      "description": "ポール・グレアム風のエッセイ執筆を支援するプラグイン。Ghost APIとの統合、PG執筆哲学に基づいた編集機能を提供します。"
+    }
+  ]
+}

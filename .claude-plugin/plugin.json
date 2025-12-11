@@ -8,9 +8,5 @@
   },
   "license": "MIT",
   "keywords": ["writing", "essay", "paul-graham", "ghost", "blog"],
-  "homepage": "",
-  "repository": {
-    "type": "git",
-    "url": ""
-  }
+  "repository": "https://github.com/mtane0412/hanatane-plugin"
 }

@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "ghost": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp/ghost/dist/index.js"],
+      "env": {
+        "GHOST_URL": "${GHOST_URL}",
+        "GHOST_ADMIN_API_KEY": "${GHOST_ADMIN_API_KEY}"
+      }
+    }
+  }
+}
